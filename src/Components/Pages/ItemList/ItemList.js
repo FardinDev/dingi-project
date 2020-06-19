@@ -85,6 +85,8 @@ const TextField = styled.input`
 class ItemList extends Component {
   constructor(props){
     super(props);
+
+ 
   }
   state = {
     dataFromAPI: [],
@@ -94,6 +96,10 @@ class ItemList extends Component {
     striped: true,
     highlight: true,
     pagination: true,
+    subHeader: true,
+    subHeaderAlign: 'right',
+    searchValue: ''
+
   }
 
   componentDidMount(){
@@ -108,6 +114,7 @@ class ItemList extends Component {
 
         self.setState({
           dataFromAPI: response.data,
+          data: response.data,
           loading: false
         })
       
@@ -116,7 +123,46 @@ class ItemList extends Component {
         console.log(error);
       });
     };  
+    onKeyDown = (e) => {
+      
+     if(e.keyCode == 8){
+      this.setState({
+        data: this.state.dataFromAPI,
+      })
+     }
+     
+    }
+    search = (e) => {
+      let filterText = e.target.value.replace(/\s/g, '').toLowerCase();
+      this.setState({
+        searchValue: filterText,
+      })
+      let filteredData = [];
+       
+        this.setState({
+          data: this.state.dataFromAPI,
+        })
 
+      if(filterText){
+
+        filteredData = this.state.data.filter(function(item){
+          return item.product.toLowerCase().includes(filterText) || item.district.toLowerCase().includes(filterText);
+       });
+        this.setState({
+          data: filteredData,
+        })
+      }
+
+     
+    }
+    resetSearch = () => {
+     
+      this.setState({
+        data: this.state.dataFromAPI,
+        searchValue: ''
+      })
+
+    }
   render() {
 
     return <div>
@@ -127,11 +173,24 @@ class ItemList extends Component {
      <DataTable
     title="Sales Data"
     columns={columns}
-    data={this.state.dataFromAPI}
+    data={this.state.data}
     progressPending={this.state.loading}
     pagination={this.state.pagination}
     highlightOnHover={this.state.highlight}
     striped={this.state.striped}
+    subHeader={this.state.subHeader}
+    subHeaderComponent={
+      (
+        <div className="input-group col-3">
+          <input type="text" className='form-control' name='search' placeholder="Search Product or District" value={this.state.searchValue} onChange={this.search} onKeyDown={this.onKeyDown}/>
+          <div className="input-group-append">
+            <button className="btn btn-outline-danger" type="button" onClick={this.resetSearch}><span aria-hidden="true">&times;</span></button>
+          </div>
+        </div>
+       
+      )
+    }
+    subHeaderAlign={this.state.subHeaderAlign}
     
   />
      </div>
