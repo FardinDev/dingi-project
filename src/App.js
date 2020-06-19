@@ -1,25 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Home from "./Components/Pages/Home/Home";
+import Login from "./Components/Pages/Login/Login";
+import ItemList from "./Components/Pages/ItemList/ItemList";
 
 function App() {
+
+  const Routes = ({component: Component, ...rest}) => {
+    return (
+      <Switch>
+      <Route exact path="/login" component={Login} />
+      <Route exact path='/' component={Home} />
+      <Route exact path='/item-list' component={ItemList} />
+      </Switch>
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <Router>
+            <Routes />
+      </Router>
+    </React.Fragment>
   );
 }
 
