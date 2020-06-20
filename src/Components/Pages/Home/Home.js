@@ -303,6 +303,9 @@ this.renderCustomersCharts(this.state.dataFromAPI);
         yAxes: [{
             ticks: {
                 min: 0,
+                beginAtZero: true,
+                callback: function (value) { if (Number.isInteger(value)) { return value; } },
+                stepSize: 2
             },
             scaleLabel: {
               display: true,

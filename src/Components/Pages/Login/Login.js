@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-
+import Auth from "../../Auth/Auth";
 import axios from "axios";
+import Button from 'react-bootstrap/Button'
+import { connect } from 'react-redux';
+import { authState } from '../../../Redux/Actions/AuthAction'
 class Login extends Component {
   
   constructor(props){
@@ -10,21 +13,64 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
+      usernameError: null,
+      passwordError: null,
+      loading: false,
+      loginError: '',
       isAuthenticated,
       error
     }
 
   }
 
+  validate = () => {
+    let status = true;
+    this.setState({
+      loginError: null
+     });
+    if (this.state.username == '') {
+      status = false;
+      this.setState({
+       usernameError: 'Username Can Not Be Empty'
+      });
+    }else{
+      status = true;
+      this.setState({
+        usernameError: null
+       });
+    }
+    if (this.state.password == '') {
+      status = false;
+      this.setState({
+       passwordError: 'Password Can Not Be Empty'
+      });
+    }else{
+      status = true;
+      this.setState({
+        passwordError: null
+       });
+    }
+
+    return status;
+  } 
+
+
   onChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
     });
   } 
+
+  
   onSubmit = (e) => {
     e.preventDefault();
-
-    axios.post('http://frontend.interview.dingi.work/user/login/',
+    
+    if (this.validate()) {
+      this.setState({
+        loading: true
+       });
+      let self = this;
+      axios.post('http://frontend.interview.dingi.work/user/login/',
       {
         username: this.state.username,
         password: this.state.password
@@ -38,20 +84,30 @@ class Login extends Component {
     )
     .then(function (response) {
       console.log(response);
+      self.setState({
+        loading: false
+       });
+      if(response.status === 200){
+        Auth.login(() => {
+          self.props.history.push("/");
+        });
+      }else{
+        self.setState({
+          loginError: response.data.detail
+         });
+      }
+      
     })
     .catch(function (error) {
+      this.setState({
+        loading: false
+       });
       console.log(error);
     });
-
-    // this.setState({
-    //   isAuthenticated: true
-    // });
-
-    // localStorage.setItem('token', this.state.password);
-
-
-
-
+      
+    }
+    
+    
   } 
 
   render() {
@@ -64,13 +120,20 @@ class Login extends Component {
               <h3>LogIn</h3>
               <div className="form-group">
                   <label>User Name</label>
-                  <input type="text" name="username" className="form-control" placeholder="Enter User Name" value={this.state.username} onChange={this.onChange}/>
+                  <input type="text" name="username" className={"form-control " + (this.state.usernameError || this.state.loginError ? "is-invalid" : "")} placeholder="Enter User Name" value={this.state.username} onChange={this.onChange}/>
+                  {this.state.usernameError && <div className="invalid-feedback">{this.state.usernameError}</div>}
               </div>
               <div className="form-group">
                   <label>Password</label>
-                  <input type="password" name="password" className="form-control" placeholder="Enter password" value={this.state.password}  onChange={this.onChange}/>
+                  <input type="password" name="password" className={"form-control " + (this.state.passwordError || this.state.loginError ? "is-invalid" : "")} 
+                  placeholder="Enter password" value={this.state.password}  onChange={this.onChange}/>
+                  {this.state.passwordError && <div className="invalid-feedback">{this.state.passwordError}</div>}
               </div>
-              <button type="submit" className="btn btn-primary btn-block">Submit</button>  
+              <div className="form-group">
+
+                  <button type="submit" disabled={this.state.loading} className={"btn btn-primary btn-block " + (this.state.loginError ? "is-invalid" : "")} > {this.state.loading ? 'Submiting...' : 'Submit'}</button> 
+                  {this.state.loginError && <div className="invalid-feedback text-center text-bold">{this.state.loginError}</div>} 
+              </div>
           </form>
       </div>
       </div>
@@ -80,5 +143,9 @@ class Login extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  auth: state.username
+});
 
-export default Login;
+export default connect(mapStateToProps, { authState })(Login);
+
