@@ -3,23 +3,29 @@ import { NavLink } from 'react-router-dom';
 import { Navbar,Nav} from 'react-bootstrap';
 import Auth from '../../Auth/Auth';
 import { withRouter } from "react-router-dom";
+import { connect } from 'react-redux';
+import { authState } from '../../../Redux/Actions/AuthAction'
  class AppNavbar extends Component {
-  constructor(props){
-    super(props);
-  }
+  // constructor(props){
+  //   super(props);
+  //   // console.log('==============home page======================');
+  //   // console.log(this.props);
+  //   // console.log('====================================');
+  // }
 
   logout = () => {
     
-    
+    this.props.authState(false);
+
     Auth.logout(() => {
       this.props.history.push("/login");
     });
-
+    
   }
 
   render() {
     return <div><Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-    <NavLink className="navbar-brand" to="/">Dingi-Project</NavLink>
+    <NavLink className="navbar-brand" to="/">Project</NavLink>
     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
     <Navbar.Collapse id="responsive-navbar-nav">
       <Nav className="mr-auto">
@@ -35,4 +41,8 @@ import { withRouter } from "react-router-dom";
   }
 }
 
-export default withRouter(AppNavbar);
+const mapStateToProps = state => ({
+  auth: state.auth 
+});
+
+export default connect(mapStateToProps, { authState })( withRouter(AppNavbar));

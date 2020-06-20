@@ -1,20 +1,28 @@
+import store from '../../Redux/Store/Store';
 class Auth {
     constructor() {
+      
       this.authenticated = false;
+
+      
     }
   
     login(cb) {
-      this.authenticated = true;
-      cb();
+      
+
+    cb();
     }
+
   
     logout(cb) {
-      this.authenticated = false;
+      
       cb();
     }
   
     isAuthenticated() {
-      return this.authenticated;
+      let st = store.getState();
+      // console.log(st.auth);
+      return st.auth;
     }
   }
   

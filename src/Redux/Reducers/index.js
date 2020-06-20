@@ -3,5 +3,5 @@ import { combineReducers } from 'redux';
 import AuthReducer from './AuthReducers';
 
 export default combineReducers({
-    todo: AuthReducer,
+    auth: AuthReducer
 });

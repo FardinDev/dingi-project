@@ -6,9 +6,11 @@ import Login from "./Components/Pages/Login/Login";
 import ItemList from "./Components/Pages/ItemList/ItemList";
 import { ProtectedRoute } from './Components/Auth/ProtectedRoute'
 import { ProtectedLogin } from './Components/Auth/ProtectedLogin'
-function App() {
 
+function App() {
+  
   const Routes = ({component: Component, ...rest}) => {
+
     return (
       <Switch>
       <ProtectedLogin exact path="/login" component={Login} />

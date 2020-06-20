@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import AppNavBar  from '../../Layouts/AppNavbar/AppNavbar';
 import DataTable from 'react-data-table-component';
 import axios from "axios";
-import styled from 'styled-components';
+
 
 const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6ImRpbmdpdXNlciIsImV4cCI6MTU5NDIzMTk5MCwiZW1haWwiOiJ0ZXN0ZXJAZGluZ2kubGl2ZSIsIm9yaWdfaWF0IjoxNTkyNTAzOTkwfQ.owlQHopp-ltirNSzkdT2BXx0DvDx80hX96hZRj2_Alc';
 
@@ -42,11 +42,11 @@ const columns = [
 
 
 class ItemList extends Component {
-  constructor(props){
-    super(props);
+  // constructor(props){
+  //   super(props);
 
  
-  }
+  // }
   state = {
     dataFromAPI: [],
     data: [],

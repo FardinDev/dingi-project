@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Auth from "../../Auth/Auth";
 import axios from "axios";
-import Button from 'react-bootstrap/Button'
 import { connect } from 'react-redux';
 import { authState } from '../../../Redux/Actions/AuthAction'
 class Login extends Component {
@@ -21,6 +20,11 @@ class Login extends Component {
       error
     }
 
+
+    // console.log('================login page====================');
+    // console.log(this.props);
+    // console.log('====================================');
+
   }
 
   validate = () => {
@@ -28,7 +32,7 @@ class Login extends Component {
     this.setState({
       loginError: null
      });
-    if (this.state.username == '') {
+    if (this.state.username === '') {
       status = false;
       this.setState({
        usernameError: 'Username Can Not Be Empty'
@@ -39,7 +43,7 @@ class Login extends Component {
         usernameError: null
        });
     }
-    if (this.state.password == '') {
+    if (this.state.password === '') {
       status = false;
       this.setState({
        passwordError: 'Password Can Not Be Empty'
@@ -69,6 +73,8 @@ class Login extends Component {
       this.setState({
         loading: true
        });
+    
+      ///login success store auth = true
       let self = this;
       axios.post('http://frontend.interview.dingi.work/user/login/',
       {
@@ -83,14 +89,19 @@ class Login extends Component {
       
     )
     .then(function (response) {
-      console.log(response);
+      // console.log(response);
       self.setState({
         loading: false
        });
       if(response.status === 200){
-        Auth.login(() => {
-          self.props.history.push("/");
-        });
+
+        self.props.authState(true);
+        // self.props.tokenSet(response.data.jwt_token);
+
+          Auth.login(() => {
+            self.props.history.push("/");
+          });
+
       }else{
         self.setState({
           loginError: response.data.detail
@@ -99,12 +110,12 @@ class Login extends Component {
       
     })
     .catch(function (error) {
-      this.setState({
+      self.setState({
         loading: false
        });
       console.log(error);
     });
-      
+  
     }
     
     
@@ -144,7 +155,8 @@ class Login extends Component {
   }
 }
 const mapStateToProps = state => ({
-  auth: state.username
+  auth: state.auth,
+  // token: state.token 
 });
 
 export default connect(mapStateToProps, { authState })(Login);
