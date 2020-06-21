@@ -21,8 +21,8 @@ class Auth {
   
     isAuthenticated() {
       let st = store.getState();
-      // console.log(st.auth);
-      return st.auth;
+      console.log('status',st.auth.isLoggedIn);
+      return st.auth.isLoggedIn;
     }
   }
   

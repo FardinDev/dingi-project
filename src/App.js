@@ -1,33 +1,58 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Home from "./Components/Pages/Home/Home";
 import Login from "./Components/Pages/Login/Login";
 import ItemList from "./Components/Pages/ItemList/ItemList";
-import { ProtectedRoute } from './Components/Auth/ProtectedRoute'
-import { ProtectedLogin } from './Components/Auth/ProtectedLogin'
+import { connect } from 'react-redux';
 
-function App() {
-  
-  const Routes = ({component: Component, ...rest}) => {
 
-    return (
-      <Switch>
-      <ProtectedLogin exact path="/login" component={Login} />
-      <ProtectedRoute exact path='/' component={Home} />
-      <ProtectedRoute exact path='/item-list' component={ItemList} />
-      <Route path="*" component={() => "404 NOT FOUND"} />
-      </Switch>
-    );
-  };
+class App extends Component{
+  constructor(props){
+    super(props);
+  }
 
-  return (
-    <React.Fragment>
+  render(){
+    let { isLoggedIn } = this.props.auth;
+    return(
+      <React.Fragment>
       <Router>
-            <Routes />
+        <Switch>
+            <Route exact path="/login" component={ () => {
+                if(isLoggedIn){
+                  return <Redirect to='/'></Redirect>
+                }else{
+                  return <Login/>
+                } 
+              }} />
+            <Route exact path='/' 
+              component={ (props) => {
+                if(!isLoggedIn){
+                  return <Redirect to='/login'></Redirect>
+                }else{
+                  return <Home/>
+                } 
+              }} />
+            <Route exact path='/item-list' 
+            component={ (props) => {
+              if(!isLoggedIn){
+                return <Redirect to='/login'></Redirect>
+              }else{
+                return <ItemList/>
+              } 
+            }} />
+            <Route path="*" component={() => "404 NOT FOUND"} />
+        </Switch>
       </Router>
-    </React.Fragment>
-  );
+     </React.Fragment>
+    )
+  }
 }
 
-export default App;
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  token: state.token 
+});
+
+export default connect(mapStateToProps, {  })(App);

@@ -2,20 +2,9 @@ export const AuthActionType = {
     AUTH_STATE: 'AUTH_STATE',
 };
 
-// export const AuthToken = {
-//     TOKEN_SET: 'TOKEN_SET',
-// };
-
-export const authState = (auth) => {
+export const authState = (isLoggedIn, token) => {
     return {
         type: AuthActionType.AUTH_STATE,
-        auth,
+        isLoggedIn, token
     };
 }
-
-// export const tokenSet = (token) => {
-//     return {
-//         type: AuthToken.TOKEN_SET,
-//         token,
-//     };
-// }

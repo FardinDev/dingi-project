@@ -1,31 +1,29 @@
-import { AuthActionType } from '../Actions/AuthAction';
+import { AuthToken } from '../Actions/TokenAction';
 import { REHYDRATE } from 'redux-persist';
 const unPersistedState = {
   
 
 }
 
-const defaultAuthState = {
+const defaultToken = {
     ...unPersistedState,
-    isLoggedIn: false,
     token: '',
 
 }
 
-
-const AuthReducer = (state = { ...defaultAuthState }, action) => {
+const TokenReducer = (state = { ...defaultToken }, action) => {
     switch (action.type) {
-        case AuthActionType.AUTH_STATE:
+        case AuthToken.TOKEN_SET:
             return {
                 ...state,
-                isLoggedIn: action.isLoggedIn,
                 token: action.token
             };
-            case REHYDRATE:
-            let { auth } = action.payload || {};
+        case REHYDRATE:
+            let { token } = action.payload || {};
+          
             return {
                 ...state,
-                ...(auth || {}),
+                ...(token || {}),
                 ...unPersistedState
             };
 
@@ -35,4 +33,4 @@ const AuthReducer = (state = { ...defaultAuthState }, action) => {
     }
 }
 
-export default AuthReducer;
+export default TokenReducer;

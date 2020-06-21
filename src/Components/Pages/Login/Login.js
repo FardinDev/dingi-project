@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import Auth from "../../Auth/Auth";
+
 import axios from "axios";
 import { connect } from 'react-redux';
 import { authState } from '../../../Redux/Actions/AuthAction'
+
 class Login extends Component {
   
   constructor(props){
@@ -19,11 +20,6 @@ class Login extends Component {
       isAuthenticated,
       error
     }
-
-
-    // console.log('================login page====================');
-    // console.log(this.props);
-    // console.log('====================================');
 
   }
 
@@ -95,13 +91,9 @@ class Login extends Component {
        });
       if(response.status === 200){
 
-        self.props.authState(true);
-        // self.props.tokenSet(response.data.jwt_token);
-
-          Auth.login(() => {
-            self.props.history.push("/");
-          });
-
+        self.props.authState(true, response.data.jwt_token);
+        // self.props.history.push("/");
+  
       }else{
         self.setState({
           loginError: response.data.detail
@@ -110,11 +102,13 @@ class Login extends Component {
       
     })
     .catch(function (error) {
+      
+      console.log(error);
       self.setState({
         loading: false
        });
-      console.log(error);
     });
+
   
     }
     
@@ -156,7 +150,6 @@ class Login extends Component {
 }
 const mapStateToProps = state => ({
   auth: state.auth,
-  // token: state.token 
 });
 
 export default connect(mapStateToProps, { authState })(Login);

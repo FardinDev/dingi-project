@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import AppNavBar  from '../../Layouts/AppNavbar/AppNavbar'
 import { Bar, Pie } from 'react-chartjs-2';
 import axios from "axios";
-const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6ImRpbmdpdXNlciIsImV4cCI6MTU5NDIzMTk5MCwiZW1haWwiOiJ0ZXN0ZXJAZGluZ2kubGl2ZSIsIm9yaWdfaWF0IjoxNTkyNTAzOTkwfQ.owlQHopp-ltirNSzkdT2BXx0DvDx80hX96hZRj2_Alc';
+import { connect } from 'react-redux';
+import { authState } from '../../../Redux/Actions/AuthAction'
 const colors = [
   'rgba(255, 99, 132, 0.5)',
   'rgba(54, 162, 235, 0.5)',
@@ -12,17 +13,17 @@ const colors = [
   'rgba(255, 159, 64, 0.5)',
   'rgba(255, 170, 51, 0.5)'
 ];
-// Accepts the array and key
+
 const groupBy = (array, key) => {
-  // Return the end result
+ 
   return array.reduce((result, currentValue) => {
-    // If an array already present for key, push it to the array. Else create an array and push the object
+
     (result[currentValue[key]] = result[currentValue[key]] || []).push(
       currentValue
     );
-    // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+    
     return result;
-  }, {}); // empty object is the initial value for result object
+  }, {}); 
 };
 const getOrderQuantity = (array) => {
   let tempCount = 0;
@@ -84,7 +85,7 @@ class Home extends Component {
 
   constructor(props) {
     super(props);
-  
+
     this.loardSalesChart = this.loardSalesChart.bind(this);
     this.loardCustomersChart = this.loardCustomersChart.bind(this);
     this.renderSalesCharts = this.renderSalesCharts.bind(this);
@@ -119,7 +120,7 @@ let self = this;
   axios.get('http://frontend.interview.dingi.work/user/data/',
     {
       headers: {
-        'Authorization': `JWT ${token}`
+        'Authorization': `JWT ${self.props.auth.token}`
       }
     }
   ).then(function (response) {
@@ -133,6 +134,9 @@ let self = this;
   })
   .catch(function (error) {
     console.log(error);
+    self.props.authState(false);
+    self.props.history.push("/login");
+   
   });
 };
 
@@ -342,4 +346,8 @@ legend: {
   }
 }
 
-export default Home;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { authState })(Home);

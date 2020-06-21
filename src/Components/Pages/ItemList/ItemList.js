@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import AppNavBar  from '../../Layouts/AppNavbar/AppNavbar';
 import DataTable from 'react-data-table-component';
 import axios from "axios";
-
-
-const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6ImRpbmdpdXNlciIsImV4cCI6MTU5NDIzMTk5MCwiZW1haWwiOiJ0ZXN0ZXJAZGluZ2kubGl2ZSIsIm9yaWdfaWF0IjoxNTkyNTAzOTkwfQ.owlQHopp-ltirNSzkdT2BXx0DvDx80hX96hZRj2_Alc';
+import { connect } from 'react-redux';
+import { authState } from '../../../Redux/Actions/AuthAction'
 
 
 const columns = [
@@ -66,7 +65,7 @@ class ItemList extends Component {
       axios.get('http://frontend.interview.dingi.work/user/data/',
         {
           headers: {
-            'Authorization': `JWT ${token}`
+            'Authorization': `JWT ${self.props.auth.token}`
           }
         }
       ).then(function (response) {
@@ -80,6 +79,9 @@ class ItemList extends Component {
       })
       .catch(function (error) {
         console.log(error);
+        self.props.authState(false);
+        self.props.history.push("/login");
+
       });
     };  
     onKeyDown = (e) => {
@@ -158,4 +160,8 @@ class ItemList extends Component {
   }
 }
 
-export default ItemList;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { authState })(ItemList);
