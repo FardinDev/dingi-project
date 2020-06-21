@@ -1,5 +1,5 @@
 To get started clone the project or download the zip then follow below steps:
-### `cd <folter_name>`
+### `cd <folder_name>`
 ### `npm install`
 ### `npm start`
 
