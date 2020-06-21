@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { authState } from "../../../Redux/Actions/AuthAction";
 class AppNavbar extends Component {
   logout = () => {
-    this.props.authState(false);
+    this.props.authState(false, "");
 
     Auth.logout(() => {
       this.props.history.push("/login");

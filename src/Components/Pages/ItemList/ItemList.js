@@ -69,7 +69,7 @@ class ItemList extends Component {
       })
       .catch(function (error) {
         console.log(error);
-        self.props.authState(false);
+        self.props.authState(false, "");
         self.props.history.push("/login");
       });
   }
