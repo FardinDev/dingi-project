@@ -145,7 +145,7 @@ class Login extends Component {
                       ? "is-invalid"
                       : "")
                   }
-                  placeholder="Enter password"
+                  placeholder="Enter Password"
                   value={this.state.password}
                   onChange={this.onChange}
                 />
