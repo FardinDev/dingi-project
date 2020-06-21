@@ -297,7 +297,8 @@ this.renderCustomersCharts(this.state.dataFromAPI);
   data={this.state.barChartData}
   width={100}
   height={25}
-  options={{  
+  options={{
+      
     barValueSpacing: 20,
     title: {
       display: true,
