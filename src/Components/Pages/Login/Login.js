@@ -122,7 +122,7 @@ class Login extends Component {
       <div className="auth-wrapper">
         <div className="auth-inner">
           <form onSubmit={this.onSubmit}>
-              <h3>LogIn</h3>
+              <h3><img src='dingi.png' /></h3>
               <div className="form-group">
                   <label>User Name</label>
                   <input type="text" name="username" className={"form-control " + (this.state.usernameError || this.state.loginError ? "is-invalid" : "")} placeholder="Enter User Name" value={this.state.username} onChange={this.onChange}/>

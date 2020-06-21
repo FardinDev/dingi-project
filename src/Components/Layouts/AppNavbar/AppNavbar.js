@@ -25,7 +25,7 @@ import { authState } from '../../../Redux/Actions/AuthAction'
 
   render() {
     return <div><Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-    <NavLink className="navbar-brand" to="/">Dingi Project </NavLink>
+    <NavLink className="navbar-brand" to="/"><img src="dingi.png"  height="40" className="d-inline-block align-center mr-5 ml-5" alt=""/></NavLink>
     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
     <Navbar.Collapse id="responsive-navbar-nav">
       <Nav className="mr-auto">
