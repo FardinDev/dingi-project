@@ -165,7 +165,7 @@ class Login extends Component {
                   }
                 >
                   {" "}
-                  {this.state.loading ? "Submiting..." : "Submit"}
+                  {this.state.loading ? "Logging in..." : "Login"}
                 </button>
                 {this.state.loginError && (
                   <div className="invalid-feedback text-center text-bold">
